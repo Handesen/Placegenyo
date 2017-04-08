@@ -10,6 +10,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,7 +38,7 @@ import android.widget.Toast;
 
 
 public class MainActivity extends Activity implements OnItemClickListener,GeoTask.Geo {
-    EditText edttxt_from,edttxt_to;
+    EditText edttxt_from,edttxt_to,uar,atlagfogy;
 
     String str_from,str_to;
     TextView tv_result1,tv_result2,cim1,cim2,aroda,arodavissza;
@@ -95,12 +96,15 @@ public class MainActivity extends Activity implements OnItemClickListener,GeoTas
         String res[]=result.split(",");
         Double min=Double.parseDouble(res[0])/60;
         double dist= Double.parseDouble(res[1]) / 1000;
+        DecimalFormat km = new DecimalFormat("#.#");
         tv_result1.setText("Idő= " + (int) (min / 60) + " óra " + (int) (min % 60) + " perc");
-        tv_result2.setText("Távolság= " + dist + " kilométer");
-        double fogyoda = (dist/100) * 10 * 300;
-        Toast.makeText(this, String.valueOf(fogyoda), Toast.LENGTH_SHORT).show();
-        aroda.setText(aroda.getText().toString() + " " + fogyoda);
-        arodavissza.setText(arodavissza.getText().toString() + " " + fogyoda*2);
+        tv_result2.setText("Távolság= " + km.format(dist) + " kilométer");
+        double atlagfogyasztas = Double.parseDouble(atlagfogy.getText().toString());
+        double uzemanyagar = Double.parseDouble(uar.getText().toString());
+        double fogyoda = (dist/100) * atlagfogyasztas * uzemanyagar;
+        DecimalFormat formater = new DecimalFormat("#");
+        aroda.setText(aroda.getText().toString() + " " + formater.format(fogyoda) + " FT");
+        arodavissza.setText(arodavissza.getText().toString() + " " + formater.format(fogyoda*2) + " FT");
 
     }
     public void initialize()
@@ -113,6 +117,8 @@ public class MainActivity extends Activity implements OnItemClickListener,GeoTas
         cim2 = (TextView) findViewById(R.id.cim2);
         aroda = (TextView) findViewById(R.id.aroda);
         arodavissza = (TextView) findViewById(R.id.araodavissz);
+        uar = (EditText) findViewById(R.id.uar);
+        atlagfogy = (EditText) findViewById(R.id.atlagfogy);
 
 
     }

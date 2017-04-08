@@ -23,8 +23,25 @@
         android:ems="10"
         android:hint="Írd be a cél címet">
 
-        <requestFocus />
+
     </AutoCompleteTextView>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="351.9"
+        android:ems="10"
+        android:id="@+id/uar"
+        android:hint="Üzemanyagár"
+        android:inputType="numberSigned" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName|numberDecimal"
+        android:text="8.3"
+        android:ems="10"
+        android:id="@+id/atlagfogy" />
 
     <Button
         android:text="Számítás"
