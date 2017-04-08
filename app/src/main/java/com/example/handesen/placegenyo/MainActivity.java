@@ -38,9 +38,9 @@ import android.widget.Toast;
 
 public class MainActivity extends Activity implements OnItemClickListener,GeoTask.Geo {
     EditText edttxt_from,edttxt_to;
-    Button btn_get;
+
     String str_from,str_to;
-    TextView tv_result1,tv_result2,cim1,cim2;
+    TextView tv_result1,tv_result2,cim1,cim2,aroda,arodavissza;
     private static final String LOG_TAG = "Google Places Autocomplete";
     private static final String PLACES_API_BASE = "https://maps.googleapis.com/maps/api/place";
     private static final String TYPE_AUTOCOMPLETE = "/autocomplete";
@@ -48,7 +48,7 @@ public class MainActivity extends Activity implements OnItemClickListener,GeoTas
 
     private static final String API_KEY = "AIzaSyCaIA2IzVL2pgS7w2msigFYpQlFjrLidJs";
 
-    List<String> cimek = new ArrayList<String>();
+
 
 
 
@@ -59,16 +59,28 @@ public class MainActivity extends Activity implements OnItemClickListener,GeoTas
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initialize();
-        AutoCompleteTextView autoCompView = (AutoCompleteTextView) findViewById(R.id.autoCompleteTextView);
+        final AutoCompleteTextView autoCompView = (AutoCompleteTextView) findViewById(R.id.autoCompleteTextView);
+        final AutoCompleteTextView autoCompView2 = (AutoCompleteTextView) findViewById(R.id.autoCompleteTextView2);
 
         autoCompView.setAdapter(new GooglePlacesAutocompleteAdapter(this, R.layout.list_item));
         autoCompView.setOnItemClickListener(this);
 
+        autoCompView2.setAdapter(new GooglePlacesAutocompleteAdapter(this,R.layout.list_item));
+        autoCompView2.setOnItemClickListener(this);
+
         final Button button = (Button) findViewById(R.id.button3);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                str_from = cimek.get(0);
-                str_to = cimek.get(1);
+
+                String stri = autoCompView.getText().toString();
+                String stri1 =  autoCompView2.getText().toString();
+                stri = stri.replaceAll("\\s+","+");
+                stri = stri.replaceAll(",","");
+
+                stri1 = stri1.replaceAll("\\s+","+");
+                stri1 = stri1.replaceAll(",","");
+                str_from = stri;
+                str_to = stri1;
 
                 String url = "https://maps.googleapis.com/maps/api/distancematrix/json?origins=" + str_from + "&destinations=" + str_to + "&mode=driving&language=hu&avoid=tolls&key=AIzaSyCaIA2IzVL2pgS7w2msigFYpQlFjrLidJs";
                 new GeoTask(MainActivity.this).execute(url);
@@ -82,9 +94,13 @@ public class MainActivity extends Activity implements OnItemClickListener,GeoTas
     public void setDouble(String result) {
         String res[]=result.split(",");
         Double min=Double.parseDouble(res[0])/60;
-        int dist=Integer.parseInt(res[1])/1000;
+        double dist= Double.parseDouble(res[1]) / 1000;
         tv_result1.setText("Idő= " + (int) (min / 60) + " óra " + (int) (min % 60) + " perc");
         tv_result2.setText("Távolság= " + dist + " kilométer");
+        double fogyoda = (dist/100) * 10 * 300;
+        Toast.makeText(this, String.valueOf(fogyoda), Toast.LENGTH_SHORT).show();
+        aroda.setText(aroda.getText().toString() + " " + fogyoda);
+        arodavissza.setText(arodavissza.getText().toString() + " " + fogyoda*2);
 
     }
     public void initialize()
@@ -95,22 +111,15 @@ public class MainActivity extends Activity implements OnItemClickListener,GeoTas
         tv_result2=(TextView) findViewById(R.id.textView_result2);
         cim1 = (TextView) findViewById(R.id.cim1);
         cim2 = (TextView) findViewById(R.id.cim2);
+        aroda = (TextView) findViewById(R.id.aroda);
+        arodavissza = (TextView) findViewById(R.id.araodavissz);
+
 
     }
 
     public void onItemClick(AdapterView adapterView, View view, int position, long id) {
         String str = (String) adapterView.getItemAtPosition(position);
-        if (cim1.getText().toString() == ""){
-            cim1.setText("Honnan: " + str);
-        }
-        else{
-            cim2.setText("Hova: " + str);
-        }
-        str = str.replaceAll("\\s+","+");
-        str = str.replaceAll(",","");
-        cimek.add(str);
-
-        Toast.makeText(this, cimek.toString(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, str, Toast.LENGTH_SHORT).show();
 
     }
 

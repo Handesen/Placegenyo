@@ -12,7 +12,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="Írd be a keresendő címet">
+        android:hint="Írd be Honnan indulnál">
+
+        <requestFocus />
+    </AutoCompleteTextView>
+    <AutoCompleteTextView
+        android:id="@+id/autoCompleteTextView2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Írd be a cél címet">
 
         <requestFocus />
     </AutoCompleteTextView>
@@ -47,5 +56,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/cim2" />
+
+    <TextView
+        android:text="Az út ára :"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/aroda" />
+
+    <TextView
+        android:text="Az út ára oda vissza: "
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/araodavissz" />
 
 </LinearLayout>
